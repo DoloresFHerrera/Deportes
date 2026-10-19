@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscripción a Deportes Dolores</title>
+
+    <style>
+        body {
+            background-color: lightgreen;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilo para el botón Eliminar */
+        .btn-eliminar {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Efecto al pasar el mouse */
+        .btn-eliminar:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Inscripción de Usuarios a Deportes</h1>
+
+    <h2>Registrar Usuario</h2>
+
+    <img
+        src="{{ url_for('static', filename='imagenes/deportes.png') }}"
+        alt="Deportes CECyTEM Chimalhuacán"
+        style="width: 5cm; height: auto;"
+    >
+
+    <form action="/agregar" method="POST">
+
+        <label>Nombre completo:</label>
+        <input type="text" name="nombre" required>
+        <br><br>
+
+        <label>Edad:</label>
+        <input type="number" name="edad" min="1" required>
+        <br><br>
+
+        <label>Deporte:</label>
+        <select name="deporte" required>
+            <option value="">Selecciona un deporte</option>
+            <option value="Fútbol">Fútbol</option>
+            <option value="Básquetbol">Básquetbol</option>
+            <option value="Voleibol">Voleibol</option>
+            <option value="Atletismo">Atletismo</option>
+            <option value="Natación">Natación</option>
+        </select>
+        <br><br>
+
+        <label>Categoría:</label>
+        <select name="categoria" required>
+            <option value="">Selecciona una categoría</option>
+            <option value="Infantil">Infantil</option>
+            <option value="Juvenil">Juvenil</option>
+            <option value="Libre">Libre</option>
+        </select>
+        <br><br>
+
+        <button type="submit">Inscribirse</button>
+
+    </form>
+
+    <hr>
+
+    <h2>Usuarios inscritos</h2>
+
+    <table border="5">
+
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Deporte</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for persona in inscripciones %}
+
+        <tr>
+            <td>{{ persona[0] }}</td>
+            <td>{{ persona[1] }}</td>
+            <td>{{ persona[2] }}</td>
+            <td>{{ persona[3] }}</td>
+            <td>{{ persona[4] }}</td>
+
+            <td>
+                <form
+                    action="{{ url_for('eliminar', id=persona[0]) }}"
+                    method="POST"
+                    onsubmit="return confirm('¿Estás segura de eliminar esta inscripción?');"
+                >
+                    <button type="submit" class="btn-eliminar">
+                        Eliminar
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <h2>Consultar horarios</h2>
+
+    <a href="{{ url_for('horarios') }}">Ir a Horarios</a>
+
+</body>
+</html>
+
